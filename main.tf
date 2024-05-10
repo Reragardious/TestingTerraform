@@ -82,7 +82,7 @@ resource "azurerm_network_interface" "networkinterfacemain" {
   ip_configuration {
     name                          = "testconfiguration"
     #Referenced the output for back_subnet 
-    subnet_id                     = back_subnet.internal.id
+    subnet_id                     = azurerm_subnet.back_subnet.id
     private_ip_address_allocation = "Dynamic"
   }
 }
@@ -95,10 +95,11 @@ resource "azurerm_virtual_machine" "main" {
   vm_size               = "Standard_DS1_v2"
   network_interface_ids = azurerm_network_interface.networkinterfacemain.id
   #virtual machine requires os_disk
-  os_disk {
+  storage_os_disk {
     name                 = "myOsDisk"
     caching              = "ReadWrite"
-    storage_account_type = "Premium_LRS"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
   }
 }
 
