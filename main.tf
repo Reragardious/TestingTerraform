@@ -93,7 +93,7 @@ resource "azurerm_virtual_machine" "main" {
   location              = "East US"
   resource_group_name   = "1-0ebe8a23-playground-sandbox"
   vm_size               = "Standard_DS1_v2"
-  network_interface_ids = azurerm_network_interface.networkinterfacemain.id
+  network_interface_ids = [azurerm_network_interface.networkinterfacemain.id]
   #virtual machine requires os_disk
   storage_os_disk {
     name                 = "myOsDisk"
