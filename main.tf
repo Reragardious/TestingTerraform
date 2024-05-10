@@ -54,3 +54,12 @@ resource "azurerm_lb" "LoadBalancer" {
 
     }
 }
+
+#Create a Storage Account
+resource "azurerm_storage_account" "storageAccount" {
+  name                     = "GlobalTrust_StorageForVMs_more"
+  resource_group_name      = "<Add YOUR RESOURCE GROUP NAME>"
+  location                 = "East US"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
