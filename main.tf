@@ -58,7 +58,7 @@ resource "azurerm_lb" "LoadBalancer" {
 #Create a Storage Account
 resource "azurerm_storage_account" "storageAccount" {
   #name must be lowercase and numbers and between 3 and 24
-  name                     = "GlobalTrust_StorageForVMs_more"
+  name                     = "storageaccountforvm"
   resource_group_name      = "1-0ebe8a23-playground-sandbox"
   location                 = "East US"
   account_tier             = "Standard"
