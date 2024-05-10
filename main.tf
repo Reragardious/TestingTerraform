@@ -56,7 +56,6 @@ resource "azurerm_lb" "LoadBalancer" {
     frontend_ip_configuration {
         name = "PublicIpConnectedto"
         public_ip_address_id = azurerm_public_ip.publicip.id
-
     }
 }
 
@@ -68,4 +67,44 @@ resource "azurerm_storage_account" "storageAccount" {
   location                 = "East US"
   account_tier             = "Standard"
   account_replication_type = "LRS"
+}
+
+
+
+#Creating network interface, virtual machine, and availability set below
+
+#Create a network interface for the virtual machine below
+resource "azurerm_network_interface" "networkinterfacemain" {
+  name                = "networkinterfaceglobal783"
+  location            = "East US"
+  resource_group_name = "1-0ebe8a23-playground-sandbox"
+
+  ip_configuration {
+    name                          = "testconfiguration"
+    #Referenced the output for back_subnet 
+    subnet_id                     = back_subnet.internal.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+#Create a virtual machine
+resource "azurerm_virtual_machine" "main" {
+  name                  = "globaltrust_bank_vm"
+  location              = "East US"
+  resource_group_name   = "1-0ebe8a23-playground-sandbox"
+  vm_size               = "Standard_DS1_v2"
+  network_interface_ids = azurerm_network_interface.networkinterfacemain.id
+  #virtual machine requires os_disk
+  os_disk {
+    name                 = "myOsDisk"
+    caching              = "ReadWrite"
+    storage_account_type = "Premium_LRS"
+  }
+}
+
+#Create an Availability Set
+resource "azurerm_availability_set" "availabilitysetforvm" {
+  name                = "gloabltrustbankavailset"
+  location            = "East US"
+  resource_group_name = "1-0ebe8a23-playground-sandbox"
 }
