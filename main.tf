@@ -33,6 +33,11 @@ resource "azurerm_subnet" "back_subnet" {
   address_prefixes       = ["10.0.64.0/18"]
 }
 
+#Output so it can be referenced to in virtual-machines.tf
+output "back_subnet_id" {
+  value = azurerm_subnet.back_subnet.id
+}
+
 #Create a new public ip
 resource "azurerm_public_ip" "publicip" {
   name                = "publicIpForLb"
