@@ -10,7 +10,7 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 #Create a subnet for frontened
-resource "azurerm_subnet" "subnet" {
+resource "azurerm_subnet" "front_subnet" {
   name                 = "globaltrust_bank_frontend_subnet"
   resource_group_name  = "1-0ebe8a23-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -18,7 +18,7 @@ resource "azurerm_subnet" "subnet" {
 }
 
 #Create a subnet for middle
-resource "azurerm_subnet" "subnet" {
+resource "azurerm_subnet" "middle_subnet" {
   name                 = "globaltrust_bank_middle_subnet"
   resource_group_name  = "1-0ebe8a23-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -26,7 +26,7 @@ resource "azurerm_subnet" "subnet" {
 }
 
 #Create a subnet for backend
-resource "azurerm_subnet" "subnet" {
+resource "azurerm_subnet" "back_subnet" {
   name                 = "globaltrust_bank_backend_subnet"
   resource_group_name  = "1-0ebe8a23-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -42,9 +42,10 @@ resource "azurerm_public_ip" "publicip" {
   allocation_method   = "Static"
 }
 
-#Create a load balance & connect to public ip
+#Create a load balancer & connect to public ip
 resource "azurerm_lb" "LoadBalancer" {
     name = "globaltrust_bank_loadBalancer"
+    location = "East US"    
     resource_group_name = "1-0ebe8a23-playground-sandbox"
 
     frontend_ip_configuration {
