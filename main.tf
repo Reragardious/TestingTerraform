@@ -14,7 +14,7 @@ resource "azurerm_subnet" "subnet" {
   name                 = "globaltrust_bank_frontend_subnet"
   resource_group_name  = "1-0ebe8a23-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes       = ["10.0.1.0/24"]
+  address_prefixes       = ["10.0.128.0/18"]
 }
 
 #Create a subnet for middle
@@ -22,7 +22,7 @@ resource "azurerm_subnet" "subnet" {
   name                 = "globaltrust_bank_middle_subnet"
   resource_group_name  = "1-0ebe8a23-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes       = ["10.0.1.0/24"]
+  address_prefixes       = ["10.0.0.0/18"]
 }
 
 #Create a subnet for backend
@@ -30,5 +30,5 @@ resource "azurerm_subnet" "subnet" {
   name                 = "globaltrust_bank_backend_subnet"
   resource_group_name  = "1-0ebe8a23-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes       = ["10.0.1.0/24"]
+  address_prefixes       = ["10.0.64.0/18"]
 }
