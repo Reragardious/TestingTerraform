@@ -95,6 +95,8 @@ resource "azurerm_virtual_machine" "main" {
   vm_size               = "Standard_DS1_v2"
   network_interface_ids = [azurerm_network_interface.networkinterfacemain.id]
   #virtual machine requires os_disk
+  # ERRORS accuring with virtual machine relating storage_os_disk:
+    # ERROR:"Cannot specify user image overrides for a disk already defined in the specified image reference."
   storage_os_disk {
     name                 = "myOsDisk"
     caching              = "ReadWrite"
