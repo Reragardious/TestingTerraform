@@ -25,6 +25,7 @@ resource "azurerm_virtual_machine" "main" {
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS"
 }
+}
 
 #Create an Availability Set
 resource "azurerm_availability_set" "availabilitysetforvm" {
