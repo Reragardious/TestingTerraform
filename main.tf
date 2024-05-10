@@ -32,3 +32,24 @@ resource "azurerm_subnet" "subnet" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes       = ["10.0.64.0/18"]
 }
+
+#Create a new public ip
+resource "azurerm_public_ip" "publicip" {
+  name                = "publicIpForLb"
+  #Can use location variable for location below
+  location            = "East US"
+  resource_group_name = "1-0ebe8a23-playground-sandbox"
+  allocation_method   = "Static"
+}
+
+#Create a load balance & connect to public ip
+resource "azurerm_lb" "LoadBalancer" {
+    name = "globaltrust_bank_loadBalancer"
+    resource_group_name = "1-0ebe8a23-playground-sandbox"
+
+    frontend_ip_configuration {
+        name = "PublicIpConnectedto"
+        public_ip_address_id = azurerm_public_ip.publicip.id
+
+    }
+}
