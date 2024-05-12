@@ -1,3 +1,6 @@
+#ERROR under creating virtual machine and having multiple subnets under one network interface card
+
+
 #Create a Resource Group
 #Unable to create a Resource Group, so will use the provided one from the sandbox
 
@@ -79,11 +82,13 @@ resource "azurerm_network_interface" "networkinterfacemain" {
   location            = "East US"
   resource_group_name = "1-c521cf50-playground-sandbox"
 
+  #ERROR: Ip Configurations On Same Nic Cannot Use Different Subnets:
+
   ip_configuration {
     name                          = "IPsubnetFront"
     #Referenced the output for back_subnet 
     subnet_id                     = azurerm_subnet.front_subnet.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
     #Must be true for the first ip_configuration when multiple are specified.
     primary = "true"
   }
@@ -91,14 +96,14 @@ resource "azurerm_network_interface" "networkinterfacemain" {
     name                          = "IPsubnetMiddle"
     #Referenced the output for back_subnet 
     subnet_id                     = azurerm_subnet.middle_subnet.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
     primary = "false"
   }
   ip_configuration {
     name                          = "IPsubnetBack"
     #Referenced the output for back_subnet 
     subnet_id                     = azurerm_subnet.back_subnet.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
     primary = "false"
   }
 }
