@@ -9,13 +9,13 @@ resource "azurerm_virtual_network" "vnet" {
   name                = "globaltrust_banktesting"
   address_space       = ["10.0.0.0/16"]
   location            = "East US"
-  resource_group_name = "1-c521cf50-playground-sandbox"
+  resource_group_name = "1-e6d587d8-playground-sandbox"
 }
 
 #Create a subnet for frontened
 resource "azurerm_subnet" "front_subnet" {
   name                 = "globaltrust_bank_frontend_subnet"
-  resource_group_name  = "1-c521cf50-playground-sandbox"
+  resource_group_name  = "1-e6d587d8-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes       = ["10.0.128.0/18"]
 }
@@ -23,7 +23,7 @@ resource "azurerm_subnet" "front_subnet" {
 #Create a subnet for middle
 resource "azurerm_subnet" "middle_subnet" {
   name                 = "globaltrust_bank_middle_subnet"
-  resource_group_name  = "1-c521cf50-playground-sandbox"
+  resource_group_name  = "1-e6d587d8-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes       = ["10.0.0.0/18"]
 }
@@ -31,7 +31,7 @@ resource "azurerm_subnet" "middle_subnet" {
 #Create a subnet for backend
 resource "azurerm_subnet" "back_subnet" {
   name                 = "globaltrust_bank_backend_subnet"
-  resource_group_name  = "1-c521cf50-playground-sandbox"
+  resource_group_name  = "1-e6d587d8-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes       = ["10.0.64.0/18"]
 }
@@ -46,7 +46,7 @@ resource "azurerm_public_ip" "publicip" {
   name                = "publicIpForLb"
   #Can use location variable for location below
   location            = "East US"
-  resource_group_name = "1-c521cf50-playground-sandbox"
+  resource_group_name = "1-e6d587d8-playground-sandbox"
   allocation_method   = "Static"
 }
 
@@ -54,7 +54,7 @@ resource "azurerm_public_ip" "publicip" {
 resource "azurerm_lb" "LoadBalancer" {
     name = "globaltrust_bank_loadBalancer"
     location = "East US"    
-    resource_group_name = "1-c521cf50-playground-sandbox"
+    resource_group_name = "1-e6d587d8-playground-sandbox"
 
     frontend_ip_configuration {
         name = "PublicIpConnectedto"
@@ -66,7 +66,7 @@ resource "azurerm_lb" "LoadBalancer" {
 resource "azurerm_storage_account" "storageAccount" {
   #name must be lowercase and numbers and between 3 and 24
   name                     = "globalbank582034account"
-  resource_group_name      = "1-c521cf50-playground-sandbox"
+  resource_group_name      = "1-e6d587d8-playground-sandbox"
   location                 = "East US"
   account_tier             = "Standard"
   account_replication_type = "LRS"
@@ -80,7 +80,7 @@ resource "azurerm_storage_account" "storageAccount" {
 resource "azurerm_network_interface" "networkinterfacemain" {
   name                = "networkinterfaceglobal783"
   location            = "East US"
-  resource_group_name = "1-c521cf50-playground-sandbox"
+  resource_group_name = "1-e6d587d8-playground-sandbox"
 
   #ERROR: Ip Configurations On Same Nic Cannot Use Different Subnets:
 
@@ -110,7 +110,7 @@ resource "azurerm_network_interface" "networkinterfacemain" {
 resource "azurerm_virtual_machine" "main" {
   name                  = "globaltrust_bank_vm"
   location              = "East US"
-  resource_group_name   = "1-c521cf50-playground-sandbox"
+  resource_group_name   = "1-e6d587d8-playground-sandbox"
   vm_size               = "Standard_DS1_v2"
   network_interface_ids = [azurerm_network_interface.networkinterfacemain.id]
 
@@ -129,5 +129,5 @@ resource "azurerm_virtual_machine" "main" {
 resource "azurerm_availability_set" "availabilitysetforvm" {
   name                = "gloabltrustbankavailset"
   location            = "East US"
-  resource_group_name = "1-c521cf50-playground-sandbox"
+  resource_group_name = "1-e6d587d8-playground-sandbox"
 }
