@@ -1,4 +1,4 @@
-#ERROR under creating virtual machine and having multiple subnets under one network interface card
+#ERROR Ip Configurations On Same Nic Cannot Use Different Subnets UNDER Network Interface
 
 
 #Create a Resource Group
