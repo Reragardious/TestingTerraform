@@ -80,7 +80,19 @@ resource "azurerm_network_interface" "networkinterfacemain" {
   resource_group_name = "1-c521cf50-playground-sandbox"
 
   ip_configuration {
-    name                          = "testconfiguration"
+    name                          = "IPsubnetFront"
+    #Referenced the output for back_subnet 
+    subnet_id                     = azurerm_subnet.front_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+  ip_configuration {
+    name                          = "IPsubnetMiddle"
+    #Referenced the output for back_subnet 
+    subnet_id                     = azurerm_subnet.middle_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+  ip_configuration {
+    name                          = "IPsubnetBack"
     #Referenced the output for back_subnet 
     subnet_id                     = azurerm_subnet.back_subnet.id
     private_ip_address_allocation = "Dynamic"
@@ -94,9 +106,10 @@ resource "azurerm_virtual_machine" "main" {
   resource_group_name   = "1-c521cf50-playground-sandbox"
   vm_size               = "Standard_DS1_v2"
   network_interface_ids = [azurerm_network_interface.networkinterfacemain.id]
+
   #virtual machine requires os_disk
   # ERRORS accuring with virtual machine relating storage_os_disk:
-    # ERROR:"Cannot specify user image overrides for a disk already defined in the specified image reference."
+  # ERROR:"Cannot specify user image overrides for a disk already defined in the specified image reference."
   storage_os_disk {
     name                 = "myOsDisk"
     caching              = "ReadWrite"
