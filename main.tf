@@ -88,7 +88,7 @@ resource "azurerm_network_interface" "networkinterfacemain" {
     name                          = "IPsubnetFront"
     #Referenced the output for back_subnet 
     subnet_id                     = azurerm_subnet.front_subnet.id
-    private_ip_address_allocation = "Static"
+    private_ip_address_allocation = "Dynamic"
     #Must be true for the first ip_configuration when multiple are specified.
     primary = "true"
   }
@@ -96,15 +96,13 @@ resource "azurerm_network_interface" "networkinterfacemain" {
     name                          = "IPsubnetMiddle"
     #Referenced the output for back_subnet 
     subnet_id                     = azurerm_subnet.middle_subnet.id
-    private_ip_address_allocation = "Static"
-    primary = "false"
+    private_ip_address_allocation = "Dynamic"
   }
   ip_configuration {
     name                          = "IPsubnetBack"
     #Referenced the output for back_subnet 
     subnet_id                     = azurerm_subnet.back_subnet.id
-    private_ip_address_allocation = "Static"
-    primary = "false"
+    private_ip_address_allocation = "Dynamic"
   }
 }
 
