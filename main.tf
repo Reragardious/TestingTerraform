@@ -3,6 +3,11 @@
 
 #Create a Resource Group
 #Unable to create a Resource Group, so will use the provided one from the sandbox
+#resource "azurerm_resource_group" "GlobalTrust" {
+#  name     = "GlobalTrust"
+#  location = "East US"
+#}
+
 
 #Create a Virtual Network
 resource "azurerm_virtual_network" "vnet" {
