@@ -8,6 +8,6 @@
 resource "azurerm_virtual_network" "GlobalTrustVNet" {
   name                = "GlobalTrustVNet"
   address_space       = ["10.0.0.0/16"]
-  location            = "East US"
+  location            = "West US"
   resource_group_name = "1-2d6d45b3-playground-sandbox"
 }
