@@ -5,7 +5,7 @@
 # data integrity, and access control enforcement, while also enabling global scalability and compliance with local regulation
 
 #Create a Virtual Network
-resource "azurerm_virtual_network" "GlobalTrustVNet" {
+resource "azurerm_virtual_network" "GTBVNet" {
   name                = "GlobalTrustVNet"
   address_space       = ["10.0.0.0/16"]
   location            = "West US"
@@ -18,6 +18,29 @@ resource "azurerm_virtual_network" "GlobalTrustVNet" {
 # •	Backend Subnet: Houses GlobalTrust Bank's core banking systems, including databases, transaction processing engines, and risk management platforms, responsible for managing banking operations, processing transactions, and ensuring compliance with regulatory standards.
 # •	Security Subnet: Serves as a dedicated subnet for security infrastructure components, such as intrusion detection systems, firewalls, and security monitoring tools, ensuring continuous protection against cyber threats and unauthorized access.
 
+#Create a subnet for customer-facing
+resource "azurerm_subnet" "customer_subnet" {
+  name                 = "gtb_customer_facing_subnet"
+  resource_group_name  = "1-2d6d45b3-playground-sandbox"
+  virtual_network_name = azurerm_virtual_network.GTBVNet.name
+  address_prefixes       = ["10.0.128.0/18"]
+}
+
+#Create a subnet for security 
+resource "azurerm_subnet" "security_subnet" {
+  name                 = "gtb_security_subnet"
+  resource_group_name  = "1-2d6d45b3-playground-sandbox"
+  virtual_network_name = azurerm_virtual_network.GTBVNet.name
+  address_prefixes       = ["10.0.0.0/18"]
+}
+
+#Create a subnet for backend
+resource "azurerm_subnet" "backend_subnet" {
+  name                 = "gtb_backend_subnet"
+  resource_group_name  = "1-2d6d45b3-playground-sandbox"
+  virtual_network_name = azurerm_virtual_network.GTBVNet.name
+  address_prefixes       = ["10.0.64.0/18"]
+}
 
 
 # STEP 4) Load Balancer Deployment: To ensure high availability and optimal performance of 
