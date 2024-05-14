@@ -119,5 +119,30 @@ resource "azurerm_storage_container" "gtb_storage_container" {
 # with regulatory standards, enabling GlobalTrust Bank to maintain the highest standards 
 # of security and reliability for their banking operations worldwide.
 
+resource "azurerm_network_interface" "networkinterfacemain" {
+  name                = "networkinterfaceglobal783"
+  location            = "East US"
+  resource_group_name = "1-892e30b0-playground-sandbox"
+
+  #ERROR: Ip Configurations On Same Nic Cannot Use Different Subnets:
+
+  ip_configuration {
+    name                          = "gtb_customer_facing_subnet"
+    subnet_id                     = azurerm_subnet.front_subnet.id
+    private_ip_address_allocation = "Dynamic"
+    #Must be true for the first ip_configuration when multiple are specified.
+    primary = "true"
+  }
+  ip_configuration {
+    name                          = "gtb_security_subnet"
+    subnet_id                     = azurerm_subnet.middle_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+  ip_configuration {
+    name                          = "gtb_backend_subnet"
+    subnet_id                     = azurerm_subnet.back_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
 
 
