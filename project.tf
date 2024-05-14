@@ -1,4 +1,14 @@
 
+# STEP 1) Resource Group Creation: GlobalTrust Bank establishes a dedicated resource group 
+# named "GlobalTrustRG" to streamline the management of their Azure resources, 
+# ensuring operational efficiency, cost optimization, and regulatory compliance 
+# across their global operations.
+# resource "azurerm_resource_group" "gtb_rg" {
+#  name     = "GlobalTrustRG"
+#  location = "East US"
+# }
+
+
 # STEP 2) Virtual Network Setup: To ensure secure and reliable communication between banking applications, 
 # services, and databases, GlobalTrust Bank deploys a robust virtual network, "GlobalTrustVNet," 
 # within their Azure environment. This network architecture facilitates seamless connectivity, 
@@ -81,6 +91,15 @@ resource "azurerm_storage_account" "globaltruststorage" {
   account_replication_type = "LRS"
 }
 
+# STEP 6) Virtual Machine Deployment: GlobalTrust Bank deploys virtual machines configured 
+# to support their banking applications, backend services, and regulatory compliance 
+# workflows. These virtual machines are strategically placed within an availability set, 
+# "GlobalTrustAS," to ensure fault tolerance, minimize downtime, and maintain 
+# service continuity in the event of hardware failures or system maintenance.
+
+
+
+
 # STEP 7) Storage Account Container Creation: Within the "globaltruststorage" account, 
 # GlobalTrust Bank creates dedicated containers to securely store sensitive banking data, 
 # transaction records, and regulatory documentation. These containers are designed to optimize 
@@ -92,5 +111,13 @@ resource "azurerm_storage_container" "gtb_storage_container" {
   storage_account_name  = azurerm_storage_account.globaltruststorage.name
   container_access_type = "private"
 }
+
+# STEP 8) Network Interface Card Setup: To facilitate secure communication and data transfer,
+# GlobalTrust Bank provisions network interface cards (NICs) for their virtual 
+# machines and connects them to the respective subnets within the GlobalTrustVNet. 
+# This setup ensures efficient network connectivity, data isolation, and compliance 
+# with regulatory standards, enabling GlobalTrust Bank to maintain the highest standards 
+# of security and reliability for their banking operations worldwide.
+
 
 
