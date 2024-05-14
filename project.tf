@@ -47,7 +47,24 @@ resource "azurerm_subnet" "backend_subnet" {
 # their banking services, GlobalTrust Bank deploys a load balancer, "GlobalTrustLB," 
 # within the security subnet. By assigning a new public IP address to the load balancer, GlobalTrust Bank optimizes traffic distribution, mitigates potential service disruptions, and enhances overall system resilience
 
+resource "azurerm_public_ip" "publicip" {
+  name                = "gtb_publicIpForLB"
+  #Can use location variable for location below
+  location            = "West US"
+  resource_group_name = "1-2d6d45b3-playground-sandbox"
+  allocation_method   = "Static"
+}
 
+resource "azurerm_lb" "gtb_LoadBalancer" {
+    name = "GlobalTrustLB"
+    location = "West US"    
+    resource_group_name = "1-2d6d45b3-playground-sandbox"
+
+    frontend_ip_configuration {
+        name = "ConnectionPoint_LB"
+        public_ip_address_id = azurerm_public_ip.publicip.id
+    }
+}
 
 # STEP 5) Storage Account Creation: Recognizing the critical importance of data storage, 
 # management, and regulatory compliance, GlobalTrust Bank establishes a centralized storage 
