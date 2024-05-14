@@ -10,7 +10,7 @@ terraform {
   required_version = ">= 0.14.9"
 }
 
-provider "azurerm" {
-  features {}
-  skip_provider_registration = true
-}
+#provider "azurerm" {
+#  features {}
+#  skip_provider_registration = true
+#}
