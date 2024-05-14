@@ -87,4 +87,10 @@ resource "azurerm_storage_account" "globaltruststorage" {
 # data management, access controls, and compliance with industry regulations, ensuring the 
 # integrity and confidentiality of customer information across global operations.
 
+resource "azurerm_storage_container" "gtb_storage_container" {
+  name                  = "gtb_storage_container"
+  storage_account_name  = azurerm_storage_account.globaltruststorage.name
+  container_access_type = "private"
+}
+
 
