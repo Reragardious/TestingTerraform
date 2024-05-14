@@ -77,7 +77,7 @@ resource "azurerm_storage_account" "globaltruststorage" {
   name                     = "globaltruststorage"
   resource_group_name      = "1-2d6d45b3-playground-sandbox"
   location                 = "West US"
-  account_tier             = "Premium"
+  account_tier             = "Standard"
   account_replication_type = "LRS"
 }
 
