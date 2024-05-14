@@ -91,7 +91,6 @@ resource "azurerm_network_interface" "networkinterfacemain" {
 
   ip_configuration {
     name                          = "IPsubnetFront"
-    #Referenced the output for back_subnet 
     subnet_id                     = azurerm_subnet.front_subnet.id
     private_ip_address_allocation = "Dynamic"
     #Must be true for the first ip_configuration when multiple are specified.
