@@ -18,8 +18,8 @@
 resource "azurerm_virtual_network" "GTBVNet" {
   name                = "GlobalTrustVNet"
   address_space       = ["10.0.0.0/16"]
-  location            = "West US"
-  resource_group_name = "1-2d6d45b3-playground-sandbox"
+  location            = "East US"
+  resource_group_name = "1-892e30b0-playground-sandbox"
 }
 
 # STEP 3)	Subnet Configuration: Within the virtual network, GlobalTrust Bank configures 
@@ -31,7 +31,7 @@ resource "azurerm_virtual_network" "GTBVNet" {
 #Create a subnet for customer-facing
 resource "azurerm_subnet" "customer_subnet" {
   name                 = "gtb_customer_facing_subnet"
-  resource_group_name  = "1-2d6d45b3-playground-sandbox"
+  resource_group_name  = "1-892e30b0-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.GTBVNet.name
   address_prefixes       = ["10.0.128.0/18"]
 }
@@ -39,7 +39,7 @@ resource "azurerm_subnet" "customer_subnet" {
 #Create a subnet for security 
 resource "azurerm_subnet" "security_subnet" {
   name                 = "gtb_security_subnet"
-  resource_group_name  = "1-2d6d45b3-playground-sandbox"
+  resource_group_name  = "1-892e30b0-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.GTBVNet.name
   address_prefixes       = ["10.0.0.0/18"]
 }
@@ -47,7 +47,7 @@ resource "azurerm_subnet" "security_subnet" {
 #Create a subnet for backend
 resource "azurerm_subnet" "backend_subnet" {
   name                 = "gtb_backend_subnet"
-  resource_group_name  = "1-2d6d45b3-playground-sandbox"
+  resource_group_name  = "1-892e30b0-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.GTBVNet.name
   address_prefixes       = ["10.0.64.0/18"]
 }
@@ -60,15 +60,15 @@ resource "azurerm_subnet" "backend_subnet" {
 resource "azurerm_public_ip" "publicip" {
   name                = "gtb_publicIpForLB"
   #Can use location variable for location below
-  location            = "West US"
-  resource_group_name = "1-2d6d45b3-playground-sandbox"
+  location            = "East US"
+  resource_group_name = "1-892e30b0-playground-sandbox"
   allocation_method   = "Static"
 }
 
 resource "azurerm_lb" "gtb_LoadBalancer" {
     name = "GlobalTrustLB"
-    location = "West US"    
-    resource_group_name = "1-2d6d45b3-playground-sandbox"
+    location = "East US"    
+    resource_group_name = "1-892e30b0-playground-sandbox"
 
     frontend_ip_configuration {
         name = "ConnectionPoint_LB"
@@ -85,8 +85,8 @@ resource "azurerm_lb" "gtb_LoadBalancer" {
 
 resource "azurerm_storage_account" "globaltruststorage" {
   name                     = "globaltruststorage"
-  resource_group_name      = "1-2d6d45b3-playground-sandbox"
-  location                 = "West US"
+  resource_group_name      = "1-892e30b0-playground-sandbox"
+  location                 = "East US"
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
