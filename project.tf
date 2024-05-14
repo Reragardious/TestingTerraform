@@ -73,7 +73,13 @@ resource "azurerm_lb" "gtb_LoadBalancer" {
 # requirements, including data encryption, retention policies, and audit trails, 
 # while also enabling global accessibility and scalability.
 
-
+resource "azurerm_storage_account" "globaltruststorage" {
+  name                     = "globaltruststorage"
+  resource_group_name      = "1-2d6d45b3-playground-sandbox"
+  location                 = "West US"
+  account_tier             = "Premium"
+  account_replication_type = "LRS"
+}
 
 # STEP 7) Storage Account Container Creation: Within the "globaltruststorage" account, 
 # GlobalTrust Bank creates dedicated containers to securely store sensitive banking data, 
