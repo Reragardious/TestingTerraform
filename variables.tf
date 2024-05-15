@@ -3,7 +3,7 @@
 # for Resource Group's location - This wil be used for all locations
 variable "resource_group_location" {
   type        = string
-  default     = "East US"
+  default     = "West US"
   description = "Location of the resource group."
 }
 # how to call - var.resource_group_location
