@@ -1,6 +1,6 @@
 
 resource "azurerm_storage_account" "gtb_backend_storage" {
-  name                     = "backendstorage"
+  name                     = "gtbbackendstorage"
   resource_group_name      = var.resource_group_name
   location                 = var.resource_group_location
   account_tier             = "Standard"
