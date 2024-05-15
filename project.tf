@@ -4,7 +4,7 @@
 # across their global operations.
 # resource "azurerm_resource_group" "gtb_rg" {
 #  name     = "GlobalTrustRG"
-#  location = "East US"
+#  location = var.resource_group_location
 # }
 
 
@@ -17,8 +17,8 @@
 resource "azurerm_virtual_network" "GTBVNet" {
   name                = "GlobalTrustVNet"
   address_space       = ["10.0.0.0/16"]
-  location            = "East US"
-  resource_group_name = "1-892e30b0-playground-sandbox"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
 }
 
 # STEP 3)       Subnet Configuration: Within the virtual network, GlobalTrust Bank configures 
@@ -30,7 +30,7 @@ resource "azurerm_virtual_network" "GTBVNet" {
 #Create a subnet for customer-facing
 resource "azurerm_subnet" "customer_subnet" {
   name                 = "gtb_customer_facing_subnet"
-  resource_group_name  = "1-892e30b0-playground-sandbox"
+  resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.GTBVNet.name
   address_prefixes     = ["10.0.128.0/18"]
 }
@@ -38,7 +38,7 @@ resource "azurerm_subnet" "customer_subnet" {
 #Create a subnet for security 
 resource "azurerm_subnet" "security_subnet" {
   name                 = "gtb_security_subnet"
-  resource_group_name  = "1-892e30b0-playground-sandbox"
+  resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.GTBVNet.name
   address_prefixes     = ["10.0.0.0/18"]
 }
@@ -46,7 +46,7 @@ resource "azurerm_subnet" "security_subnet" {
 #Create a subnet for backend
 resource "azurerm_subnet" "backend_subnet" {
   name                 = "gtb_backend_subnet"
-  resource_group_name  = "1-892e30b0-playground-sandbox"
+  resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.GTBVNet.name
   address_prefixes     = ["10.0.64.0/18"]
 }
@@ -59,15 +59,15 @@ resource "azurerm_subnet" "backend_subnet" {
 resource "azurerm_public_ip" "publicip" {
   name = "gtb_publicIpForLB"
   #Can use location variable for location below
-  location            = "East US"
-  resource_group_name = "1-892e30b0-playground-sandbox"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
   allocation_method   = "Static"
 }
 
 resource "azurerm_lb" "gtb_LoadBalancer" {
   name                = "GlobalTrustLB"
-  location            = "East US"
-  resource_group_name = "1-892e30b0-playground-sandbox"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
 
   frontend_ip_configuration {
     name                 = "ConnectionPoint_LB"
@@ -84,8 +84,8 @@ resource "azurerm_lb" "gtb_LoadBalancer" {
 
 resource "azurerm_storage_account" "globaltruststorage" {
   name                     = "globaltruststorage"
-  resource_group_name      = "1-892e30b0-playground-sandbox"
-  location                 = "East US"
+  resource_group_name      = var.resource_group_name
+  location                 = var.resource_group_location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
@@ -99,8 +99,8 @@ resource "azurerm_storage_account" "globaltruststorage" {
 # create managed disk
 resource "azurerm_managed_disk" "osdisk" {
   name                 = "osDisk9876"
-  location             = "East US"
-  resource_group_name  = "1-892e30b0-playground-sandbox"
+  location             = var.resource_group_location
+  resource_group_name  = var.resource_group_name
   storage_account_type = "StandardSSD_LRS"
   create_option        = "Empty"
   disk_size_gb         = "4"
@@ -109,8 +109,8 @@ resource "azurerm_managed_disk" "osdisk" {
 #Create a virtual machine
 resource "azurerm_virtual_machine" "gtb_vm" {
   name                  = "globaltrust_bank_vm"
-  location              = "East US"
-  resource_group_name   = "1-892e30b0-playground-sandbox"
+  location              = var.resource_group_location
+  resource_group_name   = var.resource_group_name
   vm_size               = "Standard_DS1_v2"
   network_interface_ids = [azurerm_network_interface.networkinterfacemain.id]
 
@@ -122,16 +122,16 @@ resource "azurerm_virtual_machine" "gtb_vm" {
     caching       = "ReadWrite"
     create_option = "Attach"
     #  managed_disk_type = "StandardSSD_LRS"
-    managed_disk_id = "/subscriptions/0cfe2870-d256-4119-b0a3-16293ac11bdc/resourceGroups/1-892e30b0-playground-sandbox/providers/Microsoft.Compute/disks/osDisk9876"
-os_type = "Linux"
+    managed_disk_id = [azurerm_managed_disk.osdisk.id]
+    os_type = "Linux"
   }
 }
 
 #Create an Availability Set
 resource "azurerm_availability_set" "availabilitysetforvm" {
   name                = "gloabltrustbankavailset"
-  location            = "East US"
-  resource_group_name = "1-892e30b0-playground-sandbox"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
 }
 
 
@@ -156,8 +156,8 @@ resource "azurerm_storage_container" "gtb_storage_container" {
 
 resource "azurerm_network_interface" "networkinterfacemain" {
   name                = "networkinterfaceglobal783"
-  location            = "East US"
-  resource_group_name = "1-892e30b0-playground-sandbox"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
 
   #ERROR: Ip Configurations On Same Nic Cannot Use Different Subnets:
 
