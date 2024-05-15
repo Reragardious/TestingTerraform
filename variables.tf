@@ -9,7 +9,7 @@ variable "resource_group_location" {
 # how to call - var.resource_group_location
 
 # for the Resource Group name, change default to the current resource group name
-variable "resource_group_name_prefix" {
+variable "resource_group_name" {
   type        = string
   default     = "1-bd0b7857-playground-sandbox"
   description = "The resource group provided by Cloud Guru Sandbox."
