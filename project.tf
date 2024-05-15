@@ -1,4 +1,3 @@
-
 # STEP 1) Resource Group Creation: GlobalTrust Bank establishes a dedicated resource group 
 # named "GlobalTrustRG" to streamline the management of their Azure resources, 
 # ensuring operational efficiency, cost optimization, and regulatory compliance 
@@ -22,18 +21,18 @@ resource "azurerm_virtual_network" "GTBVNet" {
   resource_group_name = "1-892e30b0-playground-sandbox"
 }
 
-# STEP 3)	Subnet Configuration: Within the virtual network, GlobalTrust Bank configures 
+# STEP 3)       Subnet Configuration: Within the virtual network, GlobalTrust Bank configures 
 # multiple subnets tailored to their specific banking operations and security requirements:
-# •	Customer-Facing Subnet: Hosts GlobalTrust Bank's online banking portal, mobile banking applications, and customer service platforms, providing customers with secure access to account information, transactions, and financial services.
-# •	Backend Subnet: Houses GlobalTrust Bank's core banking systems, including databases, transaction processing engines, and risk management platforms, responsible for managing banking operations, processing transactions, and ensuring compliance with regulatory standards.
-# •	Security Subnet: Serves as a dedicated subnet for security infrastructure components, such as intrusion detection systems, firewalls, and security monitoring tools, ensuring continuous protection against cyber threats and unauthorized access.
+# •     Customer-Facing Subnet: Hosts GlobalTrust Bank's online banking portal, mobile banking applications, and customer service platforms, providing customers with secure access to account information, transactions, and financial services.
+# •     Backend Subnet: Houses GlobalTrust Bank's core banking systems, including databases, transaction processing engines, and risk management platforms, responsible for managing banking operations, processing transactions, and ensuring compliance with regulatory standards.
+# •     Security Subnet: Serves as a dedicated subnet for security infrastructure components, such as intrusion detection systems, firewalls, and security monitoring tools, ensuring continuous protection against cyber threats and unauthorized access.
 
 #Create a subnet for customer-facing
 resource "azurerm_subnet" "customer_subnet" {
   name                 = "gtb_customer_facing_subnet"
   resource_group_name  = "1-892e30b0-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.GTBVNet.name
-  address_prefixes       = ["10.0.128.0/18"]
+  address_prefixes     = ["10.0.128.0/18"]
 }
 
 #Create a subnet for security 
@@ -41,7 +40,7 @@ resource "azurerm_subnet" "security_subnet" {
   name                 = "gtb_security_subnet"
   resource_group_name  = "1-892e30b0-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.GTBVNet.name
-  address_prefixes       = ["10.0.0.0/18"]
+  address_prefixes     = ["10.0.0.0/18"]
 }
 
 #Create a subnet for backend
@@ -49,7 +48,7 @@ resource "azurerm_subnet" "backend_subnet" {
   name                 = "gtb_backend_subnet"
   resource_group_name  = "1-892e30b0-playground-sandbox"
   virtual_network_name = azurerm_virtual_network.GTBVNet.name
-  address_prefixes       = ["10.0.64.0/18"]
+  address_prefixes     = ["10.0.64.0/18"]
 }
 
 
@@ -58,7 +57,7 @@ resource "azurerm_subnet" "backend_subnet" {
 # within the security subnet. By assigning a new public IP address to the load balancer, GlobalTrust Bank optimizes traffic distribution, mitigates potential service disruptions, and enhances overall system resilience
 
 resource "azurerm_public_ip" "publicip" {
-  name                = "gtb_publicIpForLB"
+  name = "gtb_publicIpForLB"
   #Can use location variable for location below
   location            = "East US"
   resource_group_name = "1-892e30b0-playground-sandbox"
@@ -66,14 +65,14 @@ resource "azurerm_public_ip" "publicip" {
 }
 
 resource "azurerm_lb" "gtb_LoadBalancer" {
-    name = "GlobalTrustLB"
-    location = "East US"    
-    resource_group_name = "1-892e30b0-playground-sandbox"
+  name                = "GlobalTrustLB"
+  location            = "East US"
+  resource_group_name = "1-892e30b0-playground-sandbox"
 
-    frontend_ip_configuration {
-        name = "ConnectionPoint_LB"
-        public_ip_address_id = azurerm_public_ip.publicip.id
-    }
+  frontend_ip_configuration {
+    name                 = "ConnectionPoint_LB"
+    public_ip_address_id = azurerm_public_ip.publicip.id
+  }
 }
 
 # STEP 5) Storage Account Creation: Recognizing the critical importance of data storage, 
@@ -97,6 +96,16 @@ resource "azurerm_storage_account" "globaltruststorage" {
 # "GlobalTrustAS," to ensure fault tolerance, minimize downtime, and maintain 
 # service continuity in the event of hardware failures or system maintenance.
 
+# create managed disk
+resource "azurerm_managed_disk" "osdisk" {
+  name                 = "osDisk9876"
+  location             = "East US"
+  resource_group_name  = "1-892e30b0-playground-sandbox"
+  storage_account_type = "StandardSSD_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = "4"
+}
+
 #Create a virtual machine
 resource "azurerm_virtual_machine" "gtb_vm" {
   name                  = "globaltrust_bank_vm"
@@ -109,10 +118,12 @@ resource "azurerm_virtual_machine" "gtb_vm" {
   # ERRORS accuring with virtual machine relating storage_os_disk:
   # ERROR:"Cannot specify user image overrides for a disk already defined in the specified image reference."
   storage_os_disk {
-    name                 = "myOsDisk"
-    caching              = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+    name          = "osDisk9876"
+    caching       = "ReadWrite"
+    create_option = "Attach"
+    #  managed_disk_type = "StandardSSD_LRS"
+    managed_disk_id = "/subscriptions/0cfe2870-d256-4119-b0a3-16293ac11bdc/resourceGroups/1-892e30b0-playground-sandbox/providers/Microsoft.Compute/disks/osDisk9876"
+os_type = "Linux"
   }
 }
 
@@ -122,6 +133,7 @@ resource "azurerm_availability_set" "availabilitysetforvm" {
   location            = "East US"
   resource_group_name = "1-892e30b0-playground-sandbox"
 }
+
 
 # STEP 7) Storage Account Container Creation: Within the "globaltruststorage" account, 
 # GlobalTrust Bank creates dedicated containers to securely store sensitive banking data, 
