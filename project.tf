@@ -122,7 +122,7 @@ resource "azurerm_virtual_machine" "gtb_vm" {
     caching       = "ReadWrite"
     create_option = "Attach"
     #  managed_disk_type = "StandardSSD_LRS"
-    managed_disk_id = [azurerm_managed_disk.osdisk.id]
+    managed_disk_id = azurerm_managed_disk.osdisk.id
     os_type = "Linux"
   }
 }
