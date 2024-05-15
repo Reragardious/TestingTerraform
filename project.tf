@@ -112,7 +112,9 @@ resource "azurerm_virtual_machine" "gtb_vm" {
   location              = var.resource_group_location
   resource_group_name   = var.resource_group_name
   vm_size               = "Standard_DS1_v2"
-  network_interface_ids = [azurerm_network_interface.networkinterfacemain.id]
+  network_interface_ids = [azurerm_network_interface.networkinterfacecustomer.id]
+  network_interface_ids = [azurerm_network_interface.networkinterfacebackend.id]
+  network_interface_ids = [azurerm_network_interface.networkinterfacesecurity.id]
 
   #virtual machine requires os_disk
   # ERRORS accuring with virtual machine relating storage_os_disk:
@@ -154,12 +156,11 @@ resource "azurerm_storage_container" "gtb_storage_container" {
 # with regulatory standards, enabling GlobalTrust Bank to maintain the highest standards 
 # of security and reliability for their banking operations worldwide.
 
-resource "azurerm_network_interface" "networkinterfacemain" {
-  name                = "networkinterfaceglobal783"
+# customer facing NIC
+resource "azurerm_network_interface" "networkinterfacecustomer" {
+  name                = "gtb_nic_customer"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-
-  #ERROR: Ip Configurations On Same Nic Cannot Use Different Subnets:
 
   ip_configuration {
     name                          = "gtb_customer_facing_ip"
@@ -168,4 +169,33 @@ resource "azurerm_network_interface" "networkinterfacemain" {
   }
 }
 
+# backend NIC
+resource "azurerm_network_interface" "networkinterfacebackend" {
+  name                = "gtb_nic_backend"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+
+  #ERROR: Ip Configurations On Same Nic Cannot Use Different Subnets:
+
+  ip_configuration {
+    name                          = "gtb_backend_ip"
+    subnet_id                     = azurerm_subnet.backend_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+# security NIC
+resource "azurerm_network_interface" "networkinterfacesecurity" {
+  name                = "gtb_nic_security"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+
+  #ERROR: Ip Configurations On Same Nic Cannot Use Different Subnets:
+
+  ip_configuration {
+    name                          = "gtb_security_ip"
+    subnet_id                     = azurerm_subnet.security_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
 
