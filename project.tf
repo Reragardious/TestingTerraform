@@ -97,8 +97,31 @@ resource "azurerm_storage_account" "globaltruststorage" {
 # "GlobalTrustAS," to ensure fault tolerance, minimize downtime, and maintain 
 # service continuity in the event of hardware failures or system maintenance.
 
+#Create a virtual machine
+resource "azurerm_virtual_machine" "gtb_vm" {
+  name                  = "globaltrust_bank_vm"
+  location              = "East US"
+  resource_group_name   = "1-892e30b0-playground-sandbox"
+  vm_size               = "Standard_DS1_v2"
+  network_interface_ids = [azurerm_network_interface.networkinterfacemain.id]
 
+  #virtual machine requires os_disk
+  # ERRORS accuring with virtual machine relating storage_os_disk:
+  # ERROR:"Cannot specify user image overrides for a disk already defined in the specified image reference."
+  storage_os_disk {
+    name                 = "myOsDisk"
+    caching              = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
+  }
+}
 
+#Create an Availability Set
+resource "azurerm_availability_set" "availabilitysetforvm" {
+  name                = "gloabltrustbankavailset"
+  location            = "East US"
+  resource_group_name = "1-892e30b0-playground-sandbox"
+}
 
 # STEP 7) Storage Account Container Creation: Within the "globaltruststorage" account, 
 # GlobalTrust Bank creates dedicated containers to securely store sensitive banking data, 
