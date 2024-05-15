@@ -130,18 +130,6 @@ resource "azurerm_network_interface" "networkinterfacemain" {
     name                          = "gtb_customer_facing_ip"
     subnet_id                     = azurerm_subnet.customer_subnet.id
     private_ip_address_allocation = "Dynamic"
-    #Must be true for the first ip_configuration when multiple are specified.
-    primary = "true"
-  }
-  ip_configuration {
-    name                          = "gtb_security_ip"
-    subnet_id                     = azurerm_subnet.security_subnet.id
-    private_ip_address_allocation = "Dynamic"
-  }
-  ip_configuration {
-    name                          = "gtb_backend_ip"
-    subnet_id                     = azurerm_subnet.backend_subnet.id
-    private_ip_address_allocation = "Dynamic"
   }
 }
 
