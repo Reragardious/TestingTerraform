@@ -112,13 +112,10 @@ resource "azurerm_virtual_machine" "gtb_vm" {
   location              = var.resource_group_location
   resource_group_name   = var.resource_group_name
   vm_size               = "Standard_DS1_v2"
-  network_interface_ids = [azurerm_network_interface.networkinterfacecustomer.id]
+  primary_network_interface_id = azurerm_network_interface.networkinterfacecustomer.id
   network_interface_ids = [azurerm_network_interface.networkinterfacebackend.id]
-  network_interface_ids = [azurerm_network_interface.networkinterfacesecurity.id]
 
   #virtual machine requires os_disk
-  # ERRORS accuring with virtual machine relating storage_os_disk:
-  # ERROR:"Cannot specify user image overrides for a disk already defined in the specified image reference."
   storage_os_disk {
     name          = "osDisk9876"
     caching       = "ReadWrite"
