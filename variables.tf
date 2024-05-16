@@ -3,7 +3,7 @@
 # for Resource Group's location - This wil be used for all locations
 variable "resource_group_location" {
   type        = string
-  default     = "West US"
+  default     = "East US"
   description = "Location of the resource group."
 }
 # how to call - var.resource_group_location
@@ -11,6 +11,6 @@ variable "resource_group_location" {
 # for the Resource Group name, change default to the current resource group name
 variable "resource_group_name" {
   type        = string
-  default     = "1-bd0b7857-playground-sandbox"
+  default     = "1-8e1cac98-playground-sandbox"
   description = "The resource group provided by Cloud Guru Sandbox."
 }
