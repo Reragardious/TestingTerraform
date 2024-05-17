@@ -1,4 +1,6 @@
+# Creating Storage Account & Container for the backend
 
+#Create storage account for backend
 resource "azurerm_storage_account" "gtb_backend_storage" {
   name                     = "gtbbackendstorage"
   resource_group_name      = var.resource_group_name
@@ -7,6 +9,7 @@ resource "azurerm_storage_account" "gtb_backend_storage" {
   account_replication_type = "LRS"
 }
 
+#Create storage account in container for backend
 resource "azurerm_storage_container" "gtb_backend_container" {
   name                  = "gtb-backend-container"
   storage_account_name  = azurerm_storage_account.gtb_backend_storage.name
