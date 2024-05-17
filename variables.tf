@@ -1,16 +1,16 @@
-# to create variables that will be called in project.tf
+# to create variables that will be called in backend.tf and main.tf
 
-# for Resource Group's location - This wil be used for all locations
+#Create variable for Resource Group's location
 variable "resource_group_location" {
   type        = string
-  default     = "East US"
+  default     = "<ADD YOUR RESOURCE GROUP LOCATION>"
   description = "Location of the resource group."
 }
 # how to call - var.resource_group_location
 
-# for the Resource Group name, change default to the current resource group name
+#Create variable for for the Resource Group's name
 variable "resource_group_name" {
   type        = string
-  default     = "1-fb63f749-playground-sandbox"
-  description = "The resource group provided by Cloud Guru Sandbox."
+  default     = "<ADD YOUR RESOURCE GROUP NAME>"
+  description = "The resource group provided by the Cloud Guru Sandbox."
 }
