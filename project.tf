@@ -120,7 +120,6 @@ resource "azurerm_virtual_machine" "gtb_vm" {
     name          = "osDisk9876"
     caching       = "ReadWrite"
     create_option = "Attach"
-    #  managed_disk_type = "StandardSSD_LRS"
     managed_disk_id = azurerm_managed_disk.osdisk.id
     os_type = "Linux"
   }
@@ -172,8 +171,6 @@ resource "azurerm_network_interface" "networkinterfacebackend" {
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
 
-  #ERROR: Ip Configurations On Same Nic Cannot Use Different Subnets:
-
   ip_configuration {
     name                          = "gtb_backend_ip"
     subnet_id                     = azurerm_subnet.backend_subnet.id
@@ -186,8 +183,6 @@ resource "azurerm_network_interface" "networkinterfacesecurity" {
   name                = "gtb_nic_security"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-
-  #ERROR: Ip Configurations On Same Nic Cannot Use Different Subnets:
 
   ip_configuration {
     name                          = "gtb_security_ip"
