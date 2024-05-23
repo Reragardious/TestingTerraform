@@ -1,7 +1,6 @@
-# TestingTerraform
-To test for a terraform project on Azure.
+Four Terraform Scripts have been created. For the purpose of deploying resources for GlobalTrust Bank (made-up bank) for the Terrfic Terraform Project.
 
-Creating:
+Created Scripts:
 --> backend.tf
 --> variables.tf
 --> project.tf
